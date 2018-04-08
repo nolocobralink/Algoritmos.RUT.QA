@@ -13,7 +13,7 @@ namespace Algoritmos.RUT.QA
             int suma = 0;
             int idV;
             int digito;
-
+            
             while (rut > 0)
             {
                 digito = rut % 10;
