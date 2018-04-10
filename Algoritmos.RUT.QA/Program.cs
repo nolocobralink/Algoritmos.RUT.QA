@@ -88,6 +88,46 @@ namespace Algoritmos.RUT.QA
             return false; //Si no es válido, se retornará false o false.
         }
 
+        //Función para validar RUT usando el número y el Dígito Verificador proporcionados.
+        static bool RUTVálido(int rut, char dv)
+        {
+            //Comente y descomente aquellos returns para probar los algoritmos 1 o 2.
+            return dv == DV1(rut); //Retorna si el Dígito Verificador es igual al que devuelve el algoritmo 1 según el RUT.
+            //return dv == DV2(rut); //Retorna si el Dígito Verificador es igual al que devuelve el algoritmo 2 según el RUT.
+        }
+
+        //Función para determinar si el formato del RUT ingresado está correcto.
+        static bool FormatoVálido(string rut)
+        {
+            if (rut.Split('-').Length == 2) //Primero comprobar que el RUT esté escrito en el formato XXXXXXXX-X, de haber más de un guión, o de no haber uno, es inválido.
+                if (rut.Split('-')[1].Length == 1) //Luego comprobar que el Dígito Verificador sea de verdad UN solo dígito.
+                    return true; //Si se cumple todo, el formato del RUT es válido.
+            return false; //Si ninguna de las condiciones anteriores se cumple, el RUT no es válido
+            //y se retorna false por defecto.
+        }
+
+        //Función especial para imprimir mensajes de error en el programa cuando se requiera.
+        static void ImprimirMensajeDeError(string mensaje)
+        {
+            Console.ForegroundColor = ConsoleColor.Red; //Se cambiará el color del texto para resaltar el siguiente mensaje.
+            Console.WriteLine(mensaje); //Se mostrará el mensaje de error.
+            Console.ForegroundColor = ConsoleColor.Gray; //Se vuelve a cambiar el color del texto al normal.
+        }
+
+        static bool SoloNúmero(string rut)
+        {
+            int auxiliar = 0;
+            try
+            {
+                auxiliar = int.Parse(rut);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         //Función o método principal.
         static void Main(string[] args)
         {
@@ -97,26 +137,26 @@ namespace Algoritmos.RUT.QA
             Console.WriteLine("Escriba un RUT en el siguiente formato: 12345678-K"); //Se dan las instrucciones en pantalla.
             A: strrut = Console.ReadLine().ToUpper(); //Se recibe el RUT que el usuario ingrese, y se fuerza su ingreso en mayúsculas,
             //de esa forma, ingresar un RUT que termine en "k" será tan válido como un RUT que termine en "K".
-            if (!int.TryParse(strrut.Split('-')[0], out rut)) //Si el número del RUT no es un número válido.
+            if (!FormatoVálido(strrut)) //Si el formato del RUT no es válido.
             {
-                Console.ForegroundColor = ConsoleColor.Red; //Se cambiará el color del texto para resaltar el siguiente mensaje.
-                Console.WriteLine("Ingrese un número de RUT válido."); //Se le notificará al usuario que debe ingresar un número de RUT válido.
-                Console.ForegroundColor = ConsoleColor.Gray; //Se vuelve a cambiar el color del texto al normal.
-                goto A; //Se devuelve directamente al ingreso del RUT.
-            }
-            dv = (char)strrut.Split('-')[1][0]; //Si el número del RUT es válido, se almacenará el Dígito Verificador.
-            if (!DVVálido(dv)) //Si el dígito ingresado no es válido.
-            {
-                Console.ForegroundColor = ConsoleColor.Red; //Se cambia el color del texto para resaltar el mensaje.
-                //Se notifica al usuario que el digito ingresado no es válido, muestra los dígitos que sí son válidos, y finalmente se le pide que ingrese el RUT otra vez.
-                Console.WriteLine("El dígito verificador ingresado no es válido, sólo puede ser un dígito (entre 0 y 9) o \"K\". Por favor, escriba el RUT nuevamente.");
-                Console.ForegroundColor = ConsoleColor.Gray; //Se vuelve al color original.
+                //Se imprime el mensaje de error.
+                ImprimirMensajeDeError("El RUT ingresado no es válido porque no cumple con el formato \"12345678-K\". Por favor, ingréselo de nuevo.");
                 goto A; //Se devuelve al ingreso del RUT.
             }
-            //Las siguientes dos líneas de código hacen uso de uno de los dos algoritmos de obtención de Dígito Verificador que existen en el programa.
-            //Para probar uno, comente el "if" que no usará y quite el comentario del que sí usará.
-            if(dv == DV1(rut)) //Si el Dígito Verificador ingresado corresponde al Dígito Verificador del RUT (según algoritmo 1).
-            //if(dv == DV2(rut)) //Si el Dígito Verificador ingresado corresponde al Dígito Verificador del RUT (según algoritmo 2).
+            if (!SoloNúmero(strrut.Split('-')[0])) //Si el número del RUT no es un número válido.
+            {
+                ImprimirMensajeDeError("Ingrese un número de RUT válido."); //Se imprime el mensaje de error correspondiente.
+                goto A; //Se devuelve directamente al ingreso del RUT.
+            }
+            rut = int.Parse(strrut.Split('-')[0]); //Se almacena el número de RUT.
+            dv = (char)strrut.Split('-')[1][0]; //Si el número del RUT y el formato es válido, se almacenará el Dígito Verificador.
+            if (!DVVálido(dv)) //Si el dígito ingresado no es válido.
+            {
+                //Se notifica al usuario que el digito ingresado no es válido, muestra los dígitos que sí son válidos, y finalmente se le pide que ingrese el RUT otra vez.
+                ImprimirMensajeDeError("El dígito verificador ingresado no es válido, sólo puede ser un dígito (entre 0 y 9) o \"K\". Por favor, escriba el RUT nuevamente.");
+                goto A; //Se devuelve al ingreso del RUT.
+            }
+            if(RUTVálido(rut, dv)) //Si el RUT y el Dígito Verificador son válidos...
                 Console.WriteLine("El RUT {0}-{1} es un RUT válido.", rut, dv); //Se mostrará un mensjae diciendo que el RUT ingresado es válido.
             else //Sino...
                 Console.WriteLine("El RUT {0}-{1} no es un RUT válido.", rut, dv); //Se mostrará un mensaje diciendo que el RUT ingresado no es válido.
