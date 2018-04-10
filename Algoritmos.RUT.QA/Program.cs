@@ -114,17 +114,18 @@ namespace Algoritmos.RUT.QA
             Console.ForegroundColor = ConsoleColor.Gray; //Se vuelve a cambiar el color del texto al normal.
         }
 
+        //Función para confirmar que el número de RUT es un número válido.
         static bool SoloNúmero(string rut)
         {
-            int auxiliar = 0;
+            int auxiliar = 0; //Se crea una variable auxiliar para almacenar el valor.
             try
             {
-                auxiliar = int.Parse(rut);
-                return true;
+                auxiliar = int.Parse(rut); //Se intenta convertir el string en un entero.
+                return true; //Si no hay problemas en la conversión, se devuelve true.
             }
             catch (Exception)
             {
-                return false;
+                return false; //Si existen problemas en la conversión, se atrapa la excepción, y se devuelve false.
             }
         }
 
