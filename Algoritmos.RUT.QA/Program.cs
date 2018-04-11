@@ -76,7 +76,7 @@ namespace Algoritmos.RUT.QA
         //en código de habría hecho más largo y, por lo tanto, menos eficiente.
 
         //Función para determinar si el Dígito Verificador que se ingresa es válido.
-        static bool DVVálido(char dv)
+        public static bool DVVálido(char dv)
         {
             char[] válidos = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'K' }; //Se crea un arreglo de caracteres que incluyan todos los dígitos del sistema decimal y la letra K mayúscula.
             //Se itera por el arreglo de caracteres para compararlo con el Dígito Verificador que se ingresó a la función.
@@ -89,7 +89,7 @@ namespace Algoritmos.RUT.QA
         }
 
         //Función para validar RUT usando el número y el Dígito Verificador proporcionados.
-        static bool RUTVálido(int rut, char dv)
+        public static bool RUTVálido(int rut, char dv)
         {
             //Comente y descomente aquellos returns para probar los algoritmos 1 o 2.
             return dv == DV1(rut); //Retorna si el Dígito Verificador es igual al que devuelve el algoritmo 1 según el RUT.
@@ -97,7 +97,7 @@ namespace Algoritmos.RUT.QA
         }
 
         //Función para determinar si el formato del RUT ingresado está correcto.
-        static bool FormatoVálido(string rut)
+        public static bool FormatoVálido(string rut)
         {
             if (rut.Split('-').Length == 2) //Primero comprobar que el RUT esté escrito en el formato XXXXXXXX-X, de haber más de un guión, o de no haber uno, es inválido.
                 if (rut.Split('-')[1].Length == 1) //Luego comprobar que el Dígito Verificador sea de verdad UN solo dígito.
@@ -115,7 +115,7 @@ namespace Algoritmos.RUT.QA
         }
 
         //Función para confirmar que el número de RUT es un número válido.
-        static bool SoloNúmero(string rut)
+        public static bool SoloNúmero(string rut)
         {
             int auxiliar = 0; //Se crea una variable auxiliar para almacenar el valor.
             try
