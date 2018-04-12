@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Windows.Forms;
 
 namespace Algoritmos.RUT.QA
 {
@@ -14,13 +15,14 @@ namespace Algoritmos.RUT.QA
         public static void IngresarFormato(string rut, bool esperado)
         {
             Assert.AreEqual(esperado, Program.FormatoVálido(rut));
+            if (esperado == Program.FormatoVálido(rut))
+                MessageBox.Show("Formato inválido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         [Test]
         [TestCase("19078446-0", true)]
         [TestCase("A158412-3", false)]
-        [TestCase("KJAJ-A", false)]
-        [TestCase("QIAJ-K-LA", false)]
+        [TestCase("KJAJ-K", false)]
         public static void IngresaSoloNúmero(string rut, bool esperado)
         {
             Assert.AreEqual(esperado, Program.SoloNúmero(rut.Split('-')[0]));
