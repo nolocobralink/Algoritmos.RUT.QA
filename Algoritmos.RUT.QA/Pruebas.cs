@@ -20,6 +20,7 @@ namespace Algoritmos.RUT.QA
         [TestCase("19078446-0", true)]
         [TestCase("A158412-3", false)]
         [TestCase("KJAJ-A", false)]
+        [TestCase("QIAJ-K-LA", false)]
         public static void IngresaSoloNúmero(string rut, bool esperado)
         {
             Assert.AreEqual(esperado, Program.SoloNúmero(rut.Split('-')[0]));
